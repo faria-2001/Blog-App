@@ -4,7 +4,7 @@ A modern, feature-rich blog application built with React, Node.js, Express, and 
 
 ## Features Implemented
 
-### ✅ Sprint 1 - Core Features
+### ✅ Sprint 1 - Core Featuress
 
 #### Authentication & Security
 - **Secure Sign Up & Login** using JWT and bcrypt
