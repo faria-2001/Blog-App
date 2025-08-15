@@ -76,13 +76,15 @@ const BlogNavbar = ({ activeMenu }) => {
           {/* User Menu */}
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
-              <Link
-                to="/admin/dashboard"
-                className="hidden sm:flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                <LuSettings className="text-lg" />
-                <span className="font-medium">Admin</span>
-              </Link>
+              {user?.role === 'admin' && (
+                <Link
+                  to="/admin/dashboard"
+                  className="hidden sm:flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                >
+                  <LuSettings className="text-lg" />
+                  <span className="font-medium">Admin</span>
+                </Link>
+              )}
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-medium text-sm">
                   {user?.name?.charAt(0).toUpperCase()}
@@ -125,13 +127,15 @@ const BlogNavbar = ({ activeMenu }) => {
             ))}
             {isAuthenticated && (
               <>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-                  onClick={() => setOpenSideMenu(false)}
-                >
-                  Admin Dashboard
-                </Link>
+                {user?.role === 'admin' && (
+                  <Link
+                    to="/admin/dashboard"
+                    className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                    onClick={() => setOpenSideMenu(false)}
+                  >
+                    Admin Dashboard
+                  </Link>
+                )}
                 <button
                   onClick={() => {
                     logout();

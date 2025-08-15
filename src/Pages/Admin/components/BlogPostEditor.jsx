@@ -11,6 +11,7 @@ import TextArea from '../../../components/Inputs/TextArea';
 import Button from '../../../components/Inputs/Button';
 import { generateSlug, calculateReadingTime } from '../../../utils/helpers';
 import AdminLayout from '../../../components/layouts/AdminLayout/AdminLayout';
+import AIBlogGenerator from '../../../components/AI/AIBlogGenerator';
 
 const BlogPostEditor = ({ isEdit = false }) => {
   const [formData, setFormData] = useState({
@@ -133,6 +134,19 @@ const BlogPostEditor = ({ isEdit = false }) => {
     handleSubmit(e, 'published');
   };
 
+  const handleAIGenerate = (generatedContent) => {
+    setFormData(prev => ({
+      ...prev,
+      title: generatedContent.title,
+      content: generatedContent.content,
+      excerpt: generatedContent.excerpt,
+      tags: generatedContent.tags.join(', ')
+    }));
+    
+    // Clear any existing errors
+    setErrors({});
+  };
+
   const components = {
     code({ node, inline, className, children, ...props }) {
       const match = /language-(\w+)/.exec(className || '');
@@ -200,7 +214,13 @@ const BlogPostEditor = ({ isEdit = false }) => {
 
           <div className="p-6">
             {!previewMode ? (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-6">
+                {/* AI Blog Generator - Only show for new posts */}
+                {!isEdit && (
+                  <AIBlogGenerator onGenerate={handleAIGenerate} />
+                )}
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-2 space-y-6">
                     <Input
@@ -299,6 +319,7 @@ const BlogPostEditor = ({ isEdit = false }) => {
                   </div>
                 </div>
               </form>
+              </div>
             ) : (
               <div className="prose max-w-none">
                 <h1>{formData.title || 'Untitled Post'}</h1>

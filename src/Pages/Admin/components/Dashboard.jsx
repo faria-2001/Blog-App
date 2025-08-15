@@ -6,6 +6,8 @@ import { useAuth } from '../../../context/AuthContext';
 import { useBlog } from '../../../context/BlogContext';
 import AdminLayout from '../../../components/layouts/AdminLayout/AdminLayout';
 import Button from '../../../components/Inputs/Button';
+import PostsChart from '../../../components/Charts/PostsChart';
+import StatsChart from '../../../components/Charts/StatsChart';
 import { LuFileText, LuEye, LuClock, LuPlus } from 'react-icons/lu';
 
 const Dashboard = () => {
@@ -23,18 +25,20 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (posts.length > 0) {
-      const published = posts.filter(post => post.status === 'published').length;
-      const drafts = posts.filter(post => post.status === 'draft').length;
-      const views = posts.reduce((total, post) => total + (post.views || 0), 0);
+    // Debug: Log the posts data
+    console.log('Dashboard - Posts data:', posts);
+    console.log('Dashboard - Posts count:', posts.length);
+    
+    const published = posts.filter(post => post.status === 'published').length;
+    const drafts = posts.filter(post => post.status === 'draft').length;
+    const views = posts.reduce((total, post) => total + (post.views || 0), 0);
 
-      setStats({
-        totalPosts: posts.length,
-        publishedPosts: published,
-        draftPosts: drafts,
-        totalViews: views
-      });
-    }
+    setStats({
+      totalPosts: posts.length,
+      publishedPosts: published,
+      draftPosts: drafts,
+      totalViews: views
+    });
   }, [posts]);
 
   const recentPosts = posts.slice(0, 5);
@@ -101,6 +105,12 @@ const Dashboard = () => {
               </div>
             );
           })}
+        </div>
+
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <PostsChart posts={posts} />
+          <StatsChart posts={posts} />
         </div>
 
         {/* Recent Posts */}

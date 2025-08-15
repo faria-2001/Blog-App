@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
 router.get('/all', adminAuth, async (req, res) => {
   try {
     const { page = 1, limit = 10, status, search } = req.query;
-    const query = {};
+    const query = { author: req.user._id }; // Only show user's own posts
 
     // Add status filter
     if (status && status !== 'all') {
@@ -295,6 +295,11 @@ router.put('/:slug', [
       return res.status(404).json({ message: 'Post not found' });
     }
 
+    // Check if user owns this post
+    if (post.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Access denied. You can only edit your own posts.' });
+    }
+
     const { title, content, excerpt, tags, featuredImage, status, readingTime } = req.body;
 
     // Update fields
@@ -345,6 +350,11 @@ router.delete('/:slug', adminAuth, async (req, res) => {
     const post = await Post.findOne({ slug: req.params.slug });
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Check if user owns this post
+    if (post.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Access denied. You can only delete your own posts.' });
     }
 
     await Post.deleteOne({ slug: req.params.slug });
