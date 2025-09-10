@@ -76,6 +76,13 @@ const BlogNavbar = ({ activeMenu }) => {
           {/* User Menu */}
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
+              <Link
+                to="/admin/dashboard"
+                className="hidden sm:flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                <LuSettings className="text-lg" />
+                <span className="font-medium">Dashboard</span>
+              </Link>
               {user?.role === 'admin' && (
                 <Link
                   to="/admin/dashboard"
@@ -127,6 +134,13 @@ const BlogNavbar = ({ activeMenu }) => {
             ))}
             {isAuthenticated && (
               <>
+                <Link
+                  to="/admin/dashboard"
+                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                  onClick={() => setOpenSideMenu(false)}
+                >
+                  My Dashboard
+                </Link>
                 {user?.role === 'admin' && (
                   <Link
                     to="/admin/dashboard"

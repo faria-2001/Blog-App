@@ -88,7 +88,7 @@ const Register = () => {
     setLoading(false);
 
     if (result.success) {
-      navigate('/admin/dashboard');
+      navigate('/admin-login');
     }
   };
 

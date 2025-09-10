@@ -32,7 +32,7 @@ export const App = () => {
               <Route path="/register" element={<Register />} />
 
               {/* Admin Routes */}
-              <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+              <Route element={<PrivateRoute allowedRoles={["admin", "user"]} />}>
                 <Route path="/admin/dashboard" element={<Dashboard />} />
                 <Route path="/admin/posts" element={<BlogPosts />} />
                 <Route path="/admin/create" element={<BlogPostEditor />} />

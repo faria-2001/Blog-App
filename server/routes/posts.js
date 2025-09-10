@@ -44,9 +44,9 @@ router.get('/', async (req, res) => {
 });
 
 // @route   GET /api/posts/all
-// @desc    Get all posts (including drafts) - Admin only
-// @access  Private (Admin)
-router.get('/all', adminAuth, async (req, res) => {
+// @desc    Get user's posts (including drafts)
+// @access  Private (Authenticated)
+router.get('/all', auth, async (req, res) => {
   try {
     const { page = 1, limit = 10, status, search } = req.query;
     const query = { author: req.user._id }; // Only show user's own posts
@@ -179,9 +179,9 @@ router.get('/:slug', async (req, res) => {
 
 // @route   POST /api/posts
 // @desc    Create a new post
-// @access  Private (Admin)
+// @access  Private (Authenticated)
 router.post('/', [
-  adminAuth,
+  auth,
   body('title')
     .trim()
     .notEmpty()
@@ -254,9 +254,9 @@ router.post('/', [
 
 // @route   PUT /api/posts/:slug
 // @desc    Update a post
-// @access  Private (Admin)
+// @access  Private (Authenticated)
 router.put('/:slug', [
-  adminAuth,
+  auth,
   body('title')
     .optional()
     .trim()
@@ -344,8 +344,8 @@ router.put('/:slug', [
 
 // @route   DELETE /api/posts/:slug
 // @desc    Delete a post
-// @access  Private (Admin)
-router.delete('/:slug', adminAuth, async (req, res) => {
+// @access  Private (Authenticated)
+router.delete('/:slug', auth, async (req, res) => {
   try {
     const post = await Post.findOne({ slug: req.params.slug });
     if (!post) {

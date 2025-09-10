@@ -31,12 +31,12 @@ const BlogPostEditor = ({ isEdit = false }) => {
   const navigate = useNavigate();
   const { postSlug } = useParams();
 
-  // Redirect if not authenticated or not admin
+  // Redirect if not authenticated
   useEffect(() => {
-    if (!isAuthenticated || !isAdmin) {
+    if (!isAuthenticated) {
       navigate('/admin-login');
     }
-  }, [isAuthenticated, isAdmin, navigate]);
+  }, [isAuthenticated, navigate]);
 
   // Load post data if editing
   useEffect(() => {
