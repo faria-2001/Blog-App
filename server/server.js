@@ -44,14 +44,16 @@ const connectDB = async () => {
   }
 };
 
-// Start server
-const PORT = process.env.PORT || 5000;
+// Connect to DB on module load for serverless
+connectDB();
 
-connectDB().then(() => {
+// Start server only in development/local
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`Health check: http://localhost:${PORT}/api/health`);
   });
-});
+}
 
 module.exports = app;
